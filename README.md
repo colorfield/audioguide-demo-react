@@ -2,12 +2,20 @@
 
 ## Getting started
 
+### Local Drupal configuration
+
+Get a copy of the production Drupal 8 website and define the CORS configuration in /admin/config/services/cors to 
+`*|http://localhost:3000`
+
 ### JSON API configuration
 
-1. Copy the src/env.example.js into src/env.js
+1. Copy the src/constants/env.example.js into src/constants/env.js
 2. Set the JSON_API_URL with your API url.
 
-### Boilerplate setup
+On your local/dev environment, it will be the Url defined for your vhost, with the protocol.
+_Example: http://mysite.dev_
+
+### React Boilerplate setup
 
 On MacOSX, get Yarn via Homebrew so it will be easily upgradable.
 
@@ -45,7 +53,8 @@ Each content entity is fully translatable via Drupal and exposed with JSON API.
 Taxonomy vocabulary, machine name: **audio_itinerary**
 
 - Name (1)
-- Image (1)
+- Icon image (1)
+- Background image (1)
 - Formatted long text (0..1)
 
 ### Stop
@@ -58,7 +67,7 @@ Content type, machine name: **audio**
 - MP3 (1)
 - Formatted long text (0..1)
 - Itinerary (1)
-- Answer (1..*)
+- Answer (0..*)
 
 ### Answer
 
@@ -83,7 +92,7 @@ React components that will be available from routes.
 
 - / **[ItineraryListPage](https://tiltfactory.prevue.it/view/ifkjvw)**
 - /itinerary/:itinerary_id **[ItineraryPage](https://tiltfactory.prevue.it/view/gwbjq2)**
-- /stop/:itinerary_id/:stop_id **[StopDetailPage](https://tiltfactory.prevue.it/view/6ztppa)**: Stop detail page, with optional answer: [playing](https://tiltfactory.prevue.it/view/ge1aaq), [stopped](https://tiltfactory.prevue.it/view/ln8s60).
+- /stop/:itinerary_id/:stop_id **[StopPage](https://tiltfactory.prevue.it/view/6ztppa)**: Stop detail page, with optional answer: [playing](https://tiltfactory.prevue.it/view/ge1aaq), [stopped](https://tiltfactory.prevue.it/view/ln8s60).
 - /about **AboutPage**: About page (@todo).
 
 ### Specific components, per page
@@ -113,7 +122,7 @@ React components that will be available from routes.
 
 - StopHeader
   - Link: back to the current itinerary stop list page.
-  - StopLocation: itinerary title and stop id
+  - StopLocation: itinerary title and stop id (@todo)
   - Title
   - LanguageSwitcher
 - AudioPlayer: mp3, image, previous and next
@@ -124,6 +133,7 @@ React components that will be available from routes.
 ### Generic components
 
 - LanguageSwitcher
+- Link
 
 ## Documentation 
 

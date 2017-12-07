@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import ReactAudioPlayer from 'react-audio-player';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './StopPage.css';
-import Link from '../../components/Link';
+import StopHeader from '../../components/StopHeader';
 import AudioQuiz from '../../components/AudioQuiz';
 import { JSON_API_URL } from '../../constants/env';
+import Link from '../../components/Link/Link';
 
 class StopPage extends React.Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
     itineraryId: PropTypes.string.isRequired,
     stop: PropTypes.shape({
       data: PropTypes.shape({
@@ -21,6 +21,13 @@ class StopPage extends React.Component {
         }).isRequired,
       ).isRequired,
     }).isRequired,
+    previousStopId: PropTypes.string,
+    nextStopId: PropTypes.string,
+  };
+
+  static defaultProps = {
+    previousStopId: null,
+    nextStopId: null,
   };
 
   mp3Url() {
@@ -33,10 +40,14 @@ class StopPage extends React.Component {
 
   imageUrl() {
     const stop = this.props.stop;
-    // Get the (single) image file Url from the stop.
-    const imageId = stop.data.relationships.field_image.data.id;
-    const image = stop.included.filter(obj => obj.id === imageId);
-    return `${JSON_API_URL}/${image[0].attributes.url}`;
+    let result = null;
+    if (stop.data.relationships.field_image.data !== null) {
+      // Get the (single) image file Url from the stop.
+      const imageId = stop.data.relationships.field_image.data.id;
+      const image = stop.included.filter(obj => obj.id === imageId);
+      result = `${JSON_API_URL}/${image[0].attributes.url}`;
+    }
+    return result;
   }
 
   answersList() {
@@ -71,23 +82,24 @@ class StopPage extends React.Component {
   }
 
   render() {
-    const { itineraryId, stop } = this.props;
+    const { itineraryId, stop, previousStopId, nextStopId } = this.props;
     const answersList = this.answersList();
 
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <h1>
-            <span className={s.audioId}>
-              {stop.data.attributes.field_id}
-            </span>
-            <span className={s.audioTitle}>
-              {this.props.title} -
-              {stop.data.attributes.title}
-            </span>
-          </h1>
-          <Link to={`/itinerary/${itineraryId}`}>Back to itinerary</Link>
-          <img src={this.imageUrl()} alt={stop.data.attributes.title} />
+          <StopHeader itineraryId={itineraryId} stop={stop} />
+          {this.imageUrl() !== null
+            ? <img src={this.imageUrl()} alt={stop.title} />
+            : <span>Image empty state</span>}
+          {this.props.previousStopId !== null
+            ? <Link to={`/stop/${itineraryId}/${previousStopId}`}>
+                Previous
+              </Link>
+            : <span>Empty previous state</span>}
+          {this.props.nextStopId !== null
+            ? <Link to={`/stop/${itineraryId}/${nextStopId}`}>Next</Link>
+            : <span>Empty next state</span>}
           <ReactAudioPlayer src={this.mp3Url()} autoPlay controls />
           <div
             // eslint-disable-next-line react/no-danger
