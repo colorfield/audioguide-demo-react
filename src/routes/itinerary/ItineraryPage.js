@@ -4,7 +4,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './ItineraryPage.css';
 import ItineraryHeader from '../../components/ItineraryHeader';
 import FilterableStopList from '../../components/FilterableStopList';
-import { JSON_API_URL } from '../../constants/env';
 
 class ItineraryPage extends React.Component {
   static propTypes = {
@@ -18,7 +17,34 @@ class ItineraryPage extends React.Component {
         }).isRequired,
       ).isRequired,
     }).isRequired,
-    stops: PropTypes.shape({
+
+    childItineraries: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+        }).isRequired,
+      ).isRequired,
+      included: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+        }).isRequired,
+      ).isRequired,
+    }),
+
+    itineraryStops: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+        }).isRequired,
+      ).isRequired,
+      included: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+        }).isRequired,
+      ).isRequired,
+    }).isRequired,
+
+    externalStops: PropTypes.shape({
       data: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.string.isRequired,
@@ -32,13 +58,37 @@ class ItineraryPage extends React.Component {
     }).isRequired,
   };
 
+  static defaultProps = {
+    childItineraries: null,
+  };
+
+  /**
+   * Attaches the includes Url to the stops data.
+   *
+   * @returns {Array}
+   */
+  static stopsWithIncludedUrl(stops) {
+    const stopsWithIncluded = [];
+    stops.data.forEach(stop => {
+      const tmpStop = stop;
+      // @todo refactor getImageFromItineraryIncluded
+      if (stop.relationships.field_image.data !== null) {
+        const imageId = stop.relationships.field_image.data.id;
+        const image = stops.included.filter(obj => obj.id === imageId);
+        tmpStop.imageUrl = image[0].meta.derivatives.thumbnail;
+      }
+      stopsWithIncluded.push(tmpStop);
+    });
+    return stopsWithIncluded;
+  }
+
   getImageFromItineraryIncluded(imageId) {
     let result = null;
     const image = this.props.itinerary.included.filter(
       obj => obj.id === imageId,
     );
     if (image[0]) {
-      result = `${JSON_API_URL}/${image[0].attributes.url}`;
+      result = image[0].meta.derivatives.thumbnail;
     }
     return result;
   }
@@ -67,37 +117,27 @@ class ItineraryPage extends React.Component {
     return tmpItinerary;
   }
 
-  /**
-   * Attaches the includes Url to the stops data.
-   *
-   * @returns {Array}
-   */
-  stopsWithIncludedUrl() {
-    const stops = this.props.stops;
-    const stopsWithIncluded = [];
-    stops.data.forEach(stop => {
-      const tmpStop = stop;
-      // @todo refactor getImageFromItineraryIncluded
-      if (stop.relationships.field_image.data !== null) {
-        const imageId = stop.relationships.field_image.data.id;
-        const image = stops.included.filter(obj => obj.id === imageId);
-        tmpStop.imageUrl = `${JSON_API_URL}/${image[0].attributes.url}`;
-      }
-      stopsWithIncluded.push(tmpStop);
-    });
-    return stopsWithIncluded;
-  }
-
   render() {
-    // const stops = this.stopsWithIncludedUrl;
-    const stops = this.stopsWithIncludedUrl();
+    const itineraryStops = ItineraryPage.stopsWithIncludedUrl(
+      this.props.itineraryStops,
+    );
+    const externalStops = ItineraryPage.stopsWithIncludedUrl(
+      this.props.externalStops,
+    );
     const itinerary = this.itineraryWithIncludedUrl();
+    // @todo includes
+    const childItineraries = this.props.childItineraries;
 
     return (
-      <div className={s.root}>
+      <div className={s.wrapper}>
         <div className={s.container}>
           <ItineraryHeader itinerary={itinerary} />
-          <FilterableStopList itinerary_id={itinerary.id} stops={stops} />
+          <FilterableStopList
+            itinerary_id={itinerary.id}
+            childItineraries={childItineraries}
+            itineraryStops={itineraryStops}
+            externalStops={externalStops}
+          />
         </div>
       </div>
     );

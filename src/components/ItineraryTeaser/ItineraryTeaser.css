@@ -1,1 +1,42 @@
-@import '../variables.css';
+@import url(../variables.css);
+
+.name {
+  display: block;
+  margin-top: 0.3em;
+}
+
+.pos {
+  position: relative;
+  z-index: 1;
+}
+
+.wrapperLink {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  font-size: 28px;
+  text-align: center;
+  background-size: cover;
+  position: relative;
+}
+
+.wrapperLink a:focus,
+.wrapperLink a:active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.wrapperLink::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #343234;
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+}

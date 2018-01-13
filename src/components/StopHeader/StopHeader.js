@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Ionicon from 'react-ionicons';
 import s from './StopHeader.css';
 import Link from '../Link';
-import LanguageSwitcher from '../LanguageSwitcher';
 import { JSON_API_URL } from '../../constants/env';
 
 class StopHeader extends React.Component {
@@ -28,6 +28,7 @@ class StopHeader extends React.Component {
         }).isRequired,
       ).isRequired,
     }).isRequired,
+    bg: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   };
 
   getImageFromIncluded(imageId) {
@@ -59,25 +60,36 @@ class StopHeader extends React.Component {
   render() {
     const stop = this.props.stop;
     const itinerary = this.itineraryWithIncludedUrl();
+    const backgroundImage = this.props.bg;
 
     return (
-      <div className={s.root}>
+      <header className={s.header}>
         <div className={s.container}>
-          <Link to={`/itinerary/${this.props.itinerary.data.id}`}>
-            Back to itinerary
-            {itinerary.iconImageUrl !== null
-              ? <img src={itinerary.iconImageUrl} alt={itinerary.title} />
-              : <span>Image empty state</span>}
-          </Link>
-          <span className={s.stopLocation}>
-            {itinerary.attributes.name} | {stop.data.attributes.field_id}
-          </span>
-          <LanguageSwitcher />
-          <h1>
+          <div className={s.contentHeader}>
+            <Link
+              to={`/itinerary/${this.props.itinerary.data.id}`}
+              className={s.backUrl}
+            >
+              <Ionicon
+                icon="md-arrow-round-back"
+                fontSize="22px"
+                color="#BE9F8A"
+              />
+              {itinerary.iconImageUrl !== null
+                ? <img src={itinerary.iconImageUrl} alt={itinerary.title} />
+                : <span />}
+            </Link>
+            <div className={s.stopLocation}>
+              {itinerary.attributes.name}{' '}
+              <span>{stop.data.attributes.field_id}</span>
+            </div>
+          </div>
+          <h1 className={s.title}>
             {stop.data.attributes.title}
           </h1>
         </div>
-      </div>
+        <div className={s.background} style={backgroundImage} />
+      </header>
     );
   }
 }

@@ -11,6 +11,7 @@ Get a copy of the production Drupal 8 website and define the CORS configuration 
 
 1. Copy the src/constants/env.example.js into src/constants/env.js
 2. Set the JSON_API_URL with your API url.
+3. Optionally set the CONSUMER_ID with the one obtained by the [Consumers](https://www.drupal.org/project/consumers) Drupal module.   
 
 On your local/dev environment, it will be the Url defined for your vhost, with the protocol.
 _Example: http://mysite.dev_
@@ -29,11 +30,26 @@ This will install both run-time project dependencies and developer tools listed 
 
 This command will build the app from the source files (/src) into the output /build folder. As soon as the initial build completes, it will start the Node.js server (node build/server.js) and Browsersync with HMR on top of it.
 
+`yarn run build --release`
+
+Exports a production build (in the build directory).
+
+### Deployment
+
+1. Get the latest codebase `git pull`
+2. Install new dependencies if any `yarn install`
+3. Production build `yarn run build --release`
+4. Start or restart PM2 `pm2 start build/server.js` `pm2 restart build/server.js`
+
 ### Storybook setup
 
 `yarn run storybook`
 
 Starts the UI component dev environment based on [Storybook](https://storybook.js.org/).
+
+## Production server
+
+Apache proxy with [PM2](http://pm2.keymetrics.io/).
 
 ## Prototype
 
@@ -66,7 +82,7 @@ Content type, machine name: **audio**
 - Image (1)
 - MP3 (1)
 - Formatted long text (0..1)
-- Itinerary (1)
+- Itinerary (1..*)
 - Answer (0..*)
 
 ### Answer
@@ -135,7 +151,7 @@ React components that will be available from routes.
 - LanguageSwitcher
 - Link
 
-## Documentation 
+## React Starter Kit boilerplate
 
-- [Boilerplate description](./REACT_STARTER_KIT.md)
-- [Boilerplate documentation](./docs/README.md)
+- [README](./REACT_STARTER_KIT.md)
+- [Documentation](./docs/README.md)

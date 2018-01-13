@@ -1,2 +1,53 @@
 @import '../variables.css';
 
+.form {
+  display: flex;
+  position: relative;
+}
+
+.wrapperIcon,
+.closeSearch {
+  background-color: #60e8ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10000;
+  border-radius: 30px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+
+.closeSearch {
+  background-color: #d5d5d5;
+  z-index: 10001;
+  display: none;
+}
+
+.search {
+  height: 48px;
+  line-height: 48px;
+  background-color: #1d1d1d;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 0 1em 0 44px;
+  font-family: var(--font-family-base);
+  transition: transform 0.1s ease-out;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  pointer-events: none;
+  transition: transform 0.1s ease-out;
+}
+
+.active .search:focus,
+.active .search:focus + svg {
+  transform: translateY(48px);
+}

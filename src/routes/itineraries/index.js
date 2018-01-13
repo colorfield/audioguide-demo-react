@@ -12,14 +12,14 @@ import Layout from '../../components/Layout';
 import ItineraryListPage from './ItineraryListPage';
 import { JSON_API_URL } from '../../constants/env';
 
-const title = 'Itineraries';
+const title = 'Audioguide'; // @todo make it translatable
 
 async function action({ locale, fetch }) {
   const drupalLocale = locale.substring(0, 2); // @todo improve
 
   // Fetch the localized terms.
   // Sort by weight is the default value, but we keep this one explicitly.
-  const endpoint = `${JSON_API_URL}/${drupalLocale}/jsonapi/taxonomy_term/audio_itinerary?sort=weight&include=field_image,field_background_image`;
+  const endpoint = `${JSON_API_URL}/${drupalLocale}/jsonapi/taxonomy_term/audio_itinerary?filter[field_is_parent][value]=1&filter[langcode][value]=${drupalLocale}&sort=weight&include=field_image,field_background_image`;
   const terms = await fetch(endpoint).then(response => response.json());
   if (!terms) throw new Error('Failed to load the itineraries.');
 

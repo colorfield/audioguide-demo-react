@@ -19,8 +19,8 @@ module.exports = {
   // default locale is the first one
   locales: [
     /* @intl-code-template '${lang}-${COUNTRY}', */
-    'fr-BE',
     'nl-BE',
+    'fr-BE',
     'de-BE',
     'en-US',
     /* @intl-code-template-end */
@@ -45,7 +45,7 @@ module.exports = {
   // Web analytics
   analytics: {
     // https://analytics.google.com/
-    googleTrackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
+    googleTrackingId: process.env.GOOGLE_TRACKING_ID || 'UA-26243535-48',
   },
 
   // Authentication

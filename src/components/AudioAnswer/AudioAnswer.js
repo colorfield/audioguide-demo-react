@@ -8,7 +8,10 @@ import s from './AudioAnswer.css';
 class AudioAnswer extends React.Component {
   static propTypes = {
     answer: PropTypes.shape({
-      id: PropTypes.string.isRequired,
+      uuid: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      mp3Url: PropTypes.string.isRequired,
     }).isRequired,
   };
 
@@ -19,10 +22,11 @@ class AudioAnswer extends React.Component {
     };
   }
 
-  handleClick() {
-    this.state = {
-      selected: true,
-    };
+  handleClick(e) {
+    e.preventDefault();
+    this.setState({
+      selected: !this.state.selected,
+    });
   }
 
   // @todo set current answer via Redux
@@ -30,21 +34,23 @@ class AudioAnswer extends React.Component {
     const { answer } = this.props;
     return (
       <div>
-        <h3>
-          <a
-            href="#"
-            onClick={e => this.handleClick(e)}
-            className={s.answerTitle}
-          >
+        <a
+          href="#"
+          onClick={e => this.handleClick(e)}
+          className={s.answerTitle}
+        >
+          <h3>
             {answer.title}
-          </a>
-        </h3>
+          </h3>
+        </a>
         <Collapsible open={this.state.selected}>
-          <ReactAudioPlayer src={answer.mp3URL} controls />
-          <div
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: answer.text }}
-          />
+          <div className={s.collapsedContent}>
+            <ReactAudioPlayer src={answer.mp3Url} controls />
+            <div
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: answer.text }}
+            />
+          </div>
         </Collapsible>
       </div>
     );

@@ -1,18 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Ionicon from 'react-ionicons';
 import s from './ItineraryHeader.css';
 import Link from '../Link';
-import LanguageSwitcher from '../LanguageSwitcher';
+
+const messages = defineMessages({
+  home: {
+    id: 'navigation.home',
+    defaultMessage: 'Home',
+    description: 'Home link in header',
+  },
+});
 
 class ItineraryHeader extends React.Component {
   static propTypes = {
     itinerary: PropTypes.shape({
       id: PropTypes.string.isRequired,
-      iconImageUrl: PropTypes.string.isRequired,
-      backgroundImageUrl: PropTypes.string.isRequired,
+      iconImageUrl: PropTypes.string,
+      backgroundImageUrl: PropTypes.string,
       attributes: PropTypes.shape({
         name: PropTypes.string.isRequired,
+        description: PropTypes.string,
       }).isRequired,
       // relationships: PropTypes.shape({
       //   field_image: PropTypes.shape({
@@ -28,36 +38,51 @@ class ItineraryHeader extends React.Component {
     itinerary: PropTypes.shape({
       iconImageUrl: null,
       backgroundImageUrl: null,
+      attributes: PropTypes.shape({
+        description: null,
+      }),
     }).isRequired,
   };
 
   render() {
     const itinerary = this.props.itinerary;
+    const inlineStyle = {
+      backgroundImage: `url(${itinerary.backgroundImageUrl})`,
+    };
 
     return (
-      <div className={s.root}>
+      <header className={s.header} style={inlineStyle}>
         <div className={s.container}>
-          <Link to="/">Back to itineraries</Link>
-          {itinerary.iconImageUrl !== null
-            ? <img
-                src={itinerary.iconImageUrl}
-                alt={itinerary.attributes.title}
-              />
-            : <span>Image empty state</span>}
-
-          {itinerary.backgroundImageUrl !== null
-            ? <img
-                src={itinerary.backgroundImageUrl}
-                alt={itinerary.attributes.title}
-              />
-            : <span>Image empty state</span>}
-          {itinerary.attributes.name}
-          <LanguageSwitcher />
-          <h1>
+          <div className={s.contentHeader}>
+            <Link to="/" className={s.backUrl}>
+              <Ionicon
+                icon="md-arrow-round-back"
+                fontSize="22px"
+                color="#BE9F8A"
+              />{' '}
+              <FormattedMessage {...messages.home} />
+            </Link>
+            {itinerary.iconImageUrl !== null
+              ? <img
+                  src={itinerary.iconImageUrl}
+                  alt={itinerary.attributes.title}
+                />
+              : <span />}
+          </div>
+          <h1 className={s.title}>
             {itinerary.attributes.name}
           </h1>
+          {itinerary.attributes.description !== null
+            ? <div
+                className={s.subtitle}
+                // eslint-disable-next-line react/no-danger
+                dangerouslySetInnerHTML={{
+                  __html: itinerary.attributes.description.value,
+                }}
+              />
+            : <span />}
         </div>
-      </div>
+      </header>
     );
   }
 }

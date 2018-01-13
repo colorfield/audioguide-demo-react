@@ -1,0 +1,86 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+@import '../variables.css';
+
+.languageSelector {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  width: 100px;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: top right;
+  transform: scale(0.8);
+  text-align: center;
+  transition: all 0.1s ease-out;
+}
+
+.plzOpenMenu .languageSelector {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.languageSelector li {
+  display: block;
+  line-height: 38px;
+}
+
+.languageSelector li + li {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.languageSelector li > * {
+  padding: 8px 3px;
+  text-decoration: none;
+  color: #000;
+  opacity: 0.5;
+  display: block;
+}
+
+.languageSelector li span {
+  font-weight: bold;
+  opacity: 1;
+}
+
+.switchButton {
+  color: var(--color-main);
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 30px;
+  display: inline-block;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: 0;
+  font-family: var(--font-family-base);
+  outline: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10px;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 0;
+    border-color: var(--color-main) transparent transparent transparent;
+  }
+}
