@@ -51,13 +51,9 @@ Starts the UI component dev environment based on [Storybook](https://storybook.j
 
 Apache proxy with [PM2](http://pm2.keymetrics.io/).
 
-## Prototype
-
-[Hi-fi prototype](https://tiltfactory.prevue.it/p/5oa6)
-
 ## Nomenclature
 
-- Itinerary and Stop: an itinerary has several "stops". Example: The "Objects" itinerary has the "Toots Thielemans" and "Expo 58" stops.
+- Itinerary and Stop: an itinerary has several "stops". Example: The "Adult" itinerary has the "The Maltese Falcon" and "You Only Live Once" stops.
 - Answer: an optional answer that can be given by the user during a stop.
 
 ## Drupal content model
@@ -66,7 +62,7 @@ Each content entity is fully translatable via Drupal and exposed with JSON API.
 
 ### Itinerary
 
-Taxonomy vocabulary, machine name: **audio_itinerary**
+Taxonomy vocabulary, machine name: **itinerary**
 
 - Name (1)
 - Icon image (1)
@@ -75,7 +71,7 @@ Taxonomy vocabulary, machine name: **audio_itinerary**
 
 ### Stop
 
-Content type, machine name: **audio**
+Content type, machine name: **stop**
 
 - Title (1)
 - Identifier (1)
@@ -106,10 +102,9 @@ each page has a different Header component.
 
 React components that will be available from routes.
 
-- / **[ItineraryListPage](https://tiltfactory.prevue.it/view/ifkjvw)**
-- /itinerary/:itinerary_id **[ItineraryPage](https://tiltfactory.prevue.it/view/gwbjq2)**
-- /stop/:itinerary_id/:stop_id **[StopPage](https://tiltfactory.prevue.it/view/6ztppa)**: Stop detail page, with optional answer: [playing](https://tiltfactory.prevue.it/view/ge1aaq), [stopped](https://tiltfactory.prevue.it/view/ln8s60).
-- /about **AboutPage**: About page (@todo).
+- / **ItineraryListPage**
+- /itinerary/:itinerary_id **ItineraryPage**
+- /stop/:itinerary_id/:stop_id **StopPage]**: Stop detail page, with optional answer
 
 ### Specific components, per page
 
