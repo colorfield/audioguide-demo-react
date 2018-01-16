@@ -83,7 +83,7 @@ Content type, machine name: **stop**
 
 ### Answer
 
-Paragraph, machine name: **audio_answer**
+Paragraph, machine name: **answer**
 
 - Title (1)
 - Formatted long text (1)
@@ -104,7 +104,7 @@ React components that will be available from routes.
 
 - / **ItineraryListPage**
 - /itinerary/:itinerary_id **ItineraryPage**
-- /stop/:itinerary_id/:stop_id **StopPage]**: Stop detail page, with optional answer
+- /stop/:itinerary_id/:stop_id **StopPage**: Stop detail page, with optional answer
 
 ### Specific components, per page
 
